@@ -32,7 +32,7 @@ void quickSort(int leftLimit, int rightLimit)
     calledTimes += (rightLimit - leftLimit) - 1;
     int pivotPosition = pivotPartition(leftLimit, rightLimit); //  if pivot is not in the first, i could change it
 
-    quickSort(leftLimit, pivotPosition - 1);
+    quickSort(leftLimit, pivotPosition);
     quickSort(pivotPosition + 1, rightLimit);
     // recurse first
     // recurse second
