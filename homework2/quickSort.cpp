@@ -14,6 +14,10 @@ int main()
     saveNums();
     quickSort(0, nums.size());
     cout << calledTimes << endl;
+
+
+    cout << (is_sorted(nums.begin(), nums.end()) ? "yes" : "no") << endl;
+
     return 0;
 }
 
@@ -30,12 +34,16 @@ void quickSort(int leftLimit, int rightLimit)
         return;
 
     calledTimes += (rightLimit - leftLimit) - 1;
+    //for the second assignment
+    int temp = nums[rightLimit - 1];
+    nums.erase(nums.begin() + rightLimit-1);
+    nums.insert(nums.begin() + leftLimit, temp);
+
     int pivotPosition = pivotPartition(leftLimit, rightLimit); //  if pivot is not in the first, i could change it
 
     quickSort(leftLimit, pivotPosition);
+
     quickSort(pivotPosition + 1, rightLimit);
-    // recurse first
-    // recurse second
 }
 
 // que pasa si es la ultima pos del array
