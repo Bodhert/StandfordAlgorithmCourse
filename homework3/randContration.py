@@ -1,5 +1,5 @@
-
 class Graph:
+    import random
     vertices = {}
 
     def addEdge(self, u, v):
@@ -19,14 +19,20 @@ class Graph:
             self.vertices[i] = [u if x == v else x for x in tempNodes]
 
         uNodes = uNodes + vNodes
-        uNodes = [value for value in uNodes if value != u]
-        uNodes = [value for value in uNodes if value != v]
+        uNodes = [value for value in uNodes if value != u and value != v]
+
         self.vertices[u] = uNodes
         self.vertices.pop(v, None)
 
+    def selectRandomAdjacentNodes(self):
+        node = self.random.choice(list(self.vertices.keys()))
+        randomNeighbor = self.random.choice(self.vertices[node])
+        return node, randomNeighbor
 
 def main():
-    graphInfoFile = open("kargerMinSmall.txt", "r")
+    import copy
+
+    graphInfoFile = open("kargerMinCut.txt", "r")
     line = graphInfoFile.readline()
     graph = Graph()
     while line:
@@ -34,13 +40,19 @@ def main():
         line = graphInfoFile.readline()
         graph.addEdge(x, y)
 
-    # graph.joinAdjacentNodes(1, 3)
-    # graph.joinAdjacentNodes(2, 4)
+    unmutableGraph = copy.deepcopy(graph.vertices)
 
-    graph.joinAdjacentNodes(1, 3)
-    graph.joinAdjacentNodes(1, 2)
-    print("debug")
+    ans = 250
 
+    for i in range(0,10000):
+        while len(graph.vertices) != 2:
+            node, neighbor = graph.selectRandomAdjacentNodes()
+            graph.joinAdjacentNodes(node,neighbor)
 
+        node, neighbor = next(iter( graph.vertices.items()))
+        ans = min(ans, len(neighbor))
+        graph.vertices = unmutableGraph
+
+    print (ans)
 if __name__ == "__main__":
     main()
