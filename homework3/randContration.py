@@ -44,14 +44,14 @@ def main():
 
     ans = 250
 
-    for i in range(0,10000):
+    for i in range(0,15):
         while len(graph.vertices) != 2:
             node, neighbor = graph.selectRandomAdjacentNodes()
             graph.joinAdjacentNodes(node,neighbor)
 
         node, neighbor = next(iter( graph.vertices.items()))
         ans = min(ans, len(neighbor))
-        graph.vertices = unmutableGraph
+        graph.vertices = copy.deepcopy(unmutableGraph)
 
     print (ans)
 if __name__ == "__main__":
