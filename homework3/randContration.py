@@ -1,58 +1,71 @@
 class Graph:
     import random
-    vertices = {}
+    vertices = []
+    parent = []
 
     def addEdge(self, u, v):
-        self.vertices[u] = v
+        self.vertices.append((u, v))
 
-    def joinAdjacentNodes(self, u, v):
-        uNodes = self.vertices[u]
-        vNodes = self.vertices[v]
-        neighborsToModify = []
+    def setParents(self):
+        self.parent = []
+        for i in range(0, len(self.vertices)):
+            self.parent.append(i)
 
-        for vNode in vNodes:
-            if vNode != u:
-                neighborsToModify.append(vNode)
+    def find(self, u):
+        if self.parent[u] == u:
+            return u
+        else:
+            self.parent[u] = self.find(self.parent[u])
+            return self.parent[u]
 
-        for i in neighborsToModify:
-            tempNodes = self.vertices[i]
-            self.vertices[i] = [u if x == v else x for x in tempNodes]
+    def union(self, u, v):
+        a = self.find(u)
+        b = self.find(v)
+        if a != b:
+            self.parent[a] = b
 
-        uNodes = uNodes + vNodes
-        uNodes = [value for value in uNodes if value != u and value != v]
+    def krager(self):
+        V = len(self.vertices)
+        while V > 2:
+            print(V)
+            edge = self.random.choice(self.vertices)
+            subset1 = self.find(edge[0])
+            subset2 = self.find(edge[1])
 
-        self.vertices[u] = uNodes
-        self.vertices.pop(v, None)
+            self.vertices.remove(edge)
 
-    def selectRandomAdjacentNodes(self):
-        node = self.random.choice(list(self.vertices.keys()))
-        randomNeighbor = self.random.choice(self.vertices[node])
-        return node, randomNeighbor
+            if(subset1 != subset2):
+                V -= 1
+                self.union(subset1, subset2)
+
+        cutedges = 0
+        for edge in self.vertices:
+            subset1 = self.find(edge[0])
+            subset2 = self.find(edge[1])
+            if(subset1 != subset2):
+                cutedges += 1
+
+        return cutedges
+
 
 def main():
-    import copy
-
     graphInfoFile = open("kargerMinCut.txt", "r")
     line = graphInfoFile.readline()
     graph = Graph()
     while line:
-        x, *y = map(int, line.split())
+        u, *y = map(int, line.split())
         line = graphInfoFile.readline()
-        graph.addEdge(x, y)
-
-    unmutableGraph = copy.deepcopy(graph.vertices)
+        for v in y:
+            graph.addEdge(u, v)
 
     ans = 250
 
-    for i in range(0,15):
-        while len(graph.vertices) != 2:
-            node, neighbor = graph.selectRandomAdjacentNodes()
-            graph.joinAdjacentNodes(node,neighbor)
+    for i in range(0, 1):
+        graph.setParents()
+        ans = min(ans, graph.krager())
 
-        node, neighbor = next(iter( graph.vertices.items()))
-        ans = min(ans, len(neighbor))
-        graph.vertices = copy.deepcopy(unmutableGraph)
+    print(ans)
 
-    print (ans)
+
 if __name__ == "__main__":
     main()
