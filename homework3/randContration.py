@@ -1,14 +1,15 @@
 class Graph:
+    MAXN = 200
     import random
-    vertices = []
+    vertices = set()
     parent = []
 
     def addEdge(self, u, v):
-        self.vertices.append((u, v))
+        self.vertices.add((u, v))
 
     def setParents(self):
         self.parent = []
-        for i in range(0, len(self.vertices)):
+        for i in range(0, self.MAXN):  # 0  to the total num of vertices
             self.parent.append(i)
 
     def find(self, u):
@@ -25,14 +26,15 @@ class Graph:
             self.parent[a] = b
 
     def krager(self):
-        V = len(self.vertices)
+
+        self.vertices =  set(map(tuple, map(sorted, self.vertices))) 
+
+        V = self.MAXN
         while V > 2:
-            print(V)
-            edge = self.random.choice(self.vertices)
+
+            edge = self.random.choice(tuple(self.vertices))
             subset1 = self.find(edge[0])
             subset2 = self.find(edge[1])
-
-            self.vertices.remove(edge)
 
             if(subset1 != subset2):
                 V -= 1
@@ -55,12 +57,14 @@ def main():
     while line:
         u, *y = map(int, line.split())
         line = graphInfoFile.readline()
+        u -= 1  # indexes fix
         for v in y:
+            v -= 1 # indexes fix
             graph.addEdge(u, v)
 
     ans = 250
 
-    for i in range(0, 1):
+    for i in range(0, 150):
         graph.setParents()
         ans = min(ans, graph.krager())
 
