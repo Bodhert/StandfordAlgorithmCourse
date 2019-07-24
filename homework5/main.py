@@ -1,12 +1,9 @@
 from PriorityQueue import PriorityQueue
-
+adjList = {}
 
 
 
 def buildGraphFromInput():
-
-    MAXN = 205
-    adjList = {}
     with open('dijkstraData.txt') as inputFile:
         for line in inputFile:
             source, *dest = map(str, line.split())
