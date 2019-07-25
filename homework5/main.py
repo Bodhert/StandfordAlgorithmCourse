@@ -1,4 +1,5 @@
 from PriorityQueue import PriorityQueue
+
 adjList = {}
 
 
