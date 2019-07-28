@@ -4,6 +4,7 @@ class PriorityQueue:
 
     def __init__(self):
         self.tree = []
+        self.tree.append((None,None))
 
     # children of i are 2i, 2i+1
 
@@ -16,7 +17,7 @@ class PriorityQueue:
         return parentIndex
 
     def bubbleUp(self, childIndex):
-        if childIndex == 0:
+        if childIndex == 1:
             return
         
         parentIndex = self.getParentIndex(childIndex)
@@ -32,21 +33,61 @@ class PriorityQueue:
 
         
     def insertNode(self, child):
-        if not self.tree:
-            self.tree.append(child)
-        else:
-            #nito preguntar es por el "padre"
-            self.tree.append(child)
+        #nito preguntar es por el "padre"
+        self.tree.append(child)
+        if len(self.tree) >= 3:
             childPos = len(self.tree)-1
             parentIndex = self.getParentIndex(childPos)
 
             if child[1] < self.tree[parentIndex][1]:
                 self.bubbleUp(childPos)
-                print(child[1])
+
+    def getChilds(self, parentIndex):
+        treeSize = len(self.tree)
+        firstChildIndex = parentIndex * 2
+        secondChildIndex = (parentIndex * 2) + 1
+        childsIndexes = []
+
+        if firstChildIndex < treeSize:
+            childsIndexes.append(firstChildIndex)
+        
+        if secondChildIndex < treeSize:
+            childsIndexes.append(secondChildIndex)
+        
+        return childsIndexes
+
+
+    def bubbleDown(self, nodeIndex):
+        if nodeIndex > len(self.tree):
+            return
+        
+        childsIndexes = self.getChilds(nodeIndex)
+
+        if len(childsIndexes) > 0:
+            currentNode = self.tree[nodeIndex]
+            firstChild = self.tree[childsIndexes[0]]
+            biggerKnowChildPos = childsIndexes[0]
+            secondChild = None
+            if len(childsIndexes) == 2:
+                secondChild = self.tree[childsIndexes[1]]
+                if firstChild[1] > secondChild[1]:
+                    biggerKnowChildPos = childsIndexes[1]
+            
+            if currentNode[1] > self.tree[biggerKnowChildPos][1]:
+                self.tree[nodeIndex], self.tree[biggerKnowChildPos] =  self.tree[biggerKnowChildPos], self.tree[nodeIndex]
+                self.bubbleDown(biggerKnowChildPos)
 
 
 
 
-    
-    def helloWorld(self):
-        return "Hello"
+
+
+    def getMin(self):
+        min  = self.tree[1]
+        self.tree.pop(1)
+
+        lastLeaf = self.tree.pop()
+        self.tree.insert(1,lastLeaf)
+
+        self.bubbleDown(1)
+        return min
