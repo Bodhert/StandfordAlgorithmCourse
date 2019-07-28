@@ -91,3 +91,6 @@ class PriorityQueue:
 
         self.bubbleDown(1)
         return min
+
+    def getSize(self):
+        return len(self.tree)
