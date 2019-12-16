@@ -45,3 +45,5 @@ def main():
     print(sum % 10000)
 
 main()
+
+# tested answer 1414, 5083
