@@ -5,13 +5,11 @@ maxHeap = []
 
 def rebalance():
     if(len(minHeap) > len(maxHeap) + 1 ):
-        while(len(minHeap) != len(maxHeap)):
-            num = abs(heapq.heappop(minHeap))
-            heapq.heappush(maxHeap, num)
+        num = abs(heapq.heappop(minHeap))
+        heapq.heappush(maxHeap, num)
     elif(len(maxHeap) > len(minHeap) + 1):
-        while(len(maxHeap) != len(minHeap)):
-            num = heapq.heappop(maxHeap)
-            heapq.heappush(minHeap, num)
+        num = heapq.heappop(maxHeap)
+        heapq.heappush(minHeap, num)
 
 def main():
     with open('Median.txt') as inputfile:
@@ -29,7 +27,7 @@ def main():
             elif(len(maxHeap) > len(minHeap)):
                 heapq.heappush(minHeap, -num)
             else:
-                #dont forget to balanceate the heaps
+                 #dont forget to balanceate the heaps
                heapq.heappush(maxHeap, num) 
 
             round += 1
@@ -43,6 +41,7 @@ def main():
                     sum += maxHeap[0]
 
     print(sum % 10000)
+    print(len(minHeap), len(maxHeap))
 
 main()
 
