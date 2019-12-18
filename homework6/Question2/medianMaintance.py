@@ -12,11 +12,11 @@ def rebalance():
         heapq.heappush(minHeap, num)
 
 def main():
-    with open('Median.txt') as inputfile:
+    with open('MedianSmall.txt') as inputfile:
         num = int(inputfile.readline()) # dont know if I need to calculate when I only have one element
         heapq.heappush(minHeap, -num)
         round = 1
-        sum = 0
+        sum = num
 
         for line in inputfile:
             num = int(line)
@@ -33,17 +33,15 @@ def main():
             round += 1
             if (round % 2 == 0):
                 rebalance()
+            if(len(minHeap) > len(maxHeap)):
                 sum += abs(minHeap[0])
             else:
-                if(len(minHeap) > len(maxHeap)):
-                    sum += abs(minHeap[0])
-                else:
-                    sum += maxHeap[0]
+                sum += maxHeap[0]
 
     print(sum % 10000)
     print(len(minHeap), len(maxHeap))
 
 main()
 
-# tested answer 1414, 5083
+# tested answer 1414, 5083, 5129, 6596
 # hacer el naive aproach e ir comparando el resultado
