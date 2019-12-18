@@ -16,7 +16,7 @@ def main():
         num = int(inputfile.readline()) # dont know if I need to calculate when I only have one element
         heapq.heappush(minHeap, -num)
         round = 1
-        sum = num
+        sum = 0
 
         for line in inputfile:
             num = int(line)
@@ -46,3 +46,4 @@ def main():
 main()
 
 # tested answer 1414, 5083
+# hacer el naive aproach e ir comparando el resultado
